@@ -46,3 +46,9 @@ type CommentStore interface {
 	UpdateComment(*Comment) error
 	DeleteComment(uuid.UUID) error
 }
+
+type Store interface {
+	ThreadStore
+	PostStore
+	CommentStore
+}

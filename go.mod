@@ -7,4 +7,7 @@ require (
 	github.com/jmoiron/sqlx v1.3.4
 )
 
-require github.com/lib/pq v1.10.4 // indirect
+require (
+	github.com/go-chi/chi v1.5.4 // indirect
+	github.com/lib/pq v1.10.4 // indirect
+)

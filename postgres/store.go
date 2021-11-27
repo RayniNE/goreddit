@@ -5,7 +5,6 @@ import (
 
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
-	"github.com/raynine/goreddit"
 )
 
 func NewStore(postgresConnectionString string) (*Store, error) {
@@ -14,15 +13,20 @@ func NewStore(postgresConnectionString string) (*Store, error) {
 		return nil, fmt.Errorf("error while opening database: %v", err)
 	}
 
+	err = db.Ping()
+	if err != nil {
+		return nil, fmt.Errorf("error connecting to database: %v", err)
+	}
+
 	return &Store{
-		ThreadStore:  NewThreadStore(db),
-		PostStore:    NewPostStore(db),
-		CommentStore: NewCommentStore(db),
+		ThreadStore:  &ThreadStore{DB: db},
+		PostStore:    &PostStore{db},
+		CommentStore: &CommentStore{db},
 	}, nil
 }
 
 type Store struct {
-	goreddit.ThreadStore
-	goreddit.PostStore
-	goreddit.CommentStore
+	*ThreadStore
+	*PostStore
+	*CommentStore
 }
